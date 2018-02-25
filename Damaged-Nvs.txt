@@ -1,0 +1,571 @@
+// Show_nvs_keys Output, The ESP32 that generated this output has a damaged NVS partition.
+// the page.Seqnr values should be inclusive of the partition size (0..4)
+// With this damage, the report only access Logical Page Zero, (sector 0)
+// but, if I manually jam in pages, 0,1,3,4 valid data is obtained
+// 
+//
+Partition nvs found, 20480 bytes
+page[0].State=0xfffffffc INIT FULL  means FULL  Seqnr=0 
+page[1].State=0xfffffffe INIT  means ACTIVE Sequence value InValid: page[1].Seqnr=5663 
+page[2].State=0xffffffff  means UNINITIALIZED  Page[2] not active, State = 0xffffffff Seqnr=4294967295 
+page[3].State=0xfffffffc INIT FULL  means FULL Sequence value InValid: page[3].Seqnr=183 
+page[4].State=0xfffffffc INIT FULL  means FULL Sequence value InValid: page[4].Seqnr=5662 
+
+Logical Page to Physical Sector
+Page 0 -> 0
+Page 1 -> 255
+Page 2 -> 255
+Page 3 -> 255
+Page 4 -> 255
+
+NAME SPACES
+           misc = 1
+   nvs.net80211 = 2
+            phy = 3
+
+NameSpace:            misc = 1
+
+NameSpace:    nvs.net80211 = 2
+
+NameSpace:             phy = 3
+
+NameSpace:            misc 
+0-001:            log type:BLOB data=size:0010
+02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+
+NameSpace:    nvs.net80211 
+0-005:        country type:U8   data=0
+0-011:   sta.authmode type:U8   data=1
+0-016:        sta.pmk type:BLOB data=size:0020
+ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+0-019:      auto.conn type:U8   data=1
+0-023:       sta.phym type:U8   data=3
+0-024:      sta.phybw type:U8   data=2
+0-050:        ap.ssid type:BLOB data=size:0024
+ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+ff ff ff ff                                      ....            
+0-055:      ap.passwd type:BLOB data=size:0041
+ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+ff                                               .               
+0-059:         ap.pmk type:BLOB data=size:0020
+ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+0-061:        ap.chan type:U8   data=1
+0-062:    ap.authmode type:U8   data=0
+0-063:      ap.hidden type:U8   data=0
+0-064:    ap.max.conn type:U8   data=4
+0-065:   bcn.interval type:U16  data=100
+0-066:        ap.phym type:U8   data=3
+0-067:       ap.phybw type:U8   data=2
+0-068:     ap.sndchan type:U8   data=1
+
+NameSpace:             phy 
+
+Orphan UnNamed : 4 
+
+Orphan UnNamed : 5 
+
+Orphan UnNamed : 6 
+
+Orphan UnNamed : 7 
+
+Orphan UnNamed : 8 
+
+Orphan UnNamed : 9 
+
+Orphan UnNamed : 10 
+
+Orphan UnNamed : 11 
+
+Orphan UnNamed : 12 
+
+Orphan UnNamed : 13 
+
+Orphan UnNamed : 14 
+
+Orphan UnNamed : 15 
+
+Orphan UnNamed : 16 
+
+Orphan UnNamed : 17 
+
+Orphan UnNamed : 18 
+
+Orphan UnNamed : 19 
+
+Orphan UnNamed : 20 
+
+Orphan UnNamed : 21 
+
+Orphan UnNamed : 22 
+
+Orphan UnNamed : 23 
+
+Orphan UnNamed : 24 
+
+Orphan UnNamed : 25 
+
+Orphan UnNamed : 26 
+
+Orphan UnNamed : 27 
+
+Orphan UnNamed : 28 
+
+Orphan UnNamed : 29 
+
+Orphan UnNamed : 30 
+
+Orphan UnNamed : 31 
+
+Orphan UnNamed : 32 
+
+Orphan UnNamed : 33 
+
+Orphan UnNamed : 34 
+
+Orphan UnNamed : 35 
+
+Orphan UnNamed : 36 
+
+Orphan UnNamed : 37 
+
+Orphan UnNamed : 38 
+
+Orphan UnNamed : 39 
+
+Orphan UnNamed : 40 
+
+Orphan UnNamed : 41 
+
+Orphan UnNamed : 42 
+
+Orphan UnNamed : 43 
+
+Orphan UnNamed : 44 
+
+Orphan UnNamed : 45 
+
+Orphan UnNamed : 46 
+
+Orphan UnNamed : 47 
+
+Orphan UnNamed : 48 
+
+Orphan UnNamed : 49 
+
+Orphan UnNamed : 50 
+
+Orphan UnNamed : 51 
+
+Orphan UnNamed : 52 
+
+Orphan UnNamed : 53 
+
+Orphan UnNamed : 54 
+
+Orphan UnNamed : 55 
+
+Orphan UnNamed : 56 
+
+Orphan UnNamed : 57 
+
+Orphan UnNamed : 58 
+
+Orphan UnNamed : 59 
+
+Orphan UnNamed : 60 
+
+Orphan UnNamed : 61 
+
+Orphan UnNamed : 62 
+
+Orphan UnNamed : 63 
+
+Orphan UnNamed : 64 
+
+Orphan UnNamed : 65 
+
+Orphan UnNamed : 66 
+
+Orphan UnNamed : 67 
+
+Orphan UnNamed : 68 
+
+Orphan UnNamed : 69 
+
+Orphan UnNamed : 70 
+
+Orphan UnNamed : 71 
+
+Orphan UnNamed : 72 
+
+Orphan UnNamed : 73 
+
+Orphan UnNamed : 74 
+
+Orphan UnNamed : 75 
+
+Orphan UnNamed : 76 
+
+Orphan UnNamed : 77 
+
+Orphan UnNamed : 78 
+
+Orphan UnNamed : 79 
+
+Orphan UnNamed : 80 
+
+Orphan UnNamed : 81 
+
+Orphan UnNamed : 82 
+
+Orphan UnNamed : 83 
+
+Orphan UnNamed : 84 
+
+Orphan UnNamed : 85 
+
+Orphan UnNamed : 86 
+
+Orphan UnNamed : 87 
+
+Orphan UnNamed : 88 
+
+Orphan UnNamed : 89 
+
+Orphan UnNamed : 90 
+
+Orphan UnNamed : 91 
+
+Orphan UnNamed : 92 
+
+Orphan UnNamed : 93 
+
+Orphan UnNamed : 94 
+
+Orphan UnNamed : 95 
+
+Orphan UnNamed : 96 
+
+Orphan UnNamed : 97 
+
+Orphan UnNamed : 98 
+
+Orphan UnNamed : 99 
+
+Orphan UnNamed : 100 
+
+Orphan UnNamed : 101 
+
+Orphan UnNamed : 102 
+
+Orphan UnNamed : 103 
+
+Orphan UnNamed : 104 
+
+Orphan UnNamed : 105 
+
+Orphan UnNamed : 106 
+
+Orphan UnNamed : 107 
+
+Orphan UnNamed : 108 
+
+Orphan UnNamed : 109 
+
+Orphan UnNamed : 110 
+
+Orphan UnNamed : 111 
+
+Orphan UnNamed : 112 
+
+Orphan UnNamed : 113 
+
+Orphan UnNamed : 114 
+
+Orphan UnNamed : 115 
+
+Orphan UnNamed : 116 
+
+Orphan UnNamed : 117 
+
+Orphan UnNamed : 118 
+
+Orphan UnNamed : 119 
+
+Orphan UnNamed : 120 
+
+Orphan UnNamed : 121 
+
+Orphan UnNamed : 122 
+
+Orphan UnNamed : 123 
+
+Orphan UnNamed : 124 
+
+Orphan UnNamed : 125 
+
+Orphan UnNamed : 126 
+
+Orphan UnNamed : 127 
+
+Orphan UnNamed : 128 
+
+Orphan UnNamed : 129 
+
+Orphan UnNamed : 130 
+
+Orphan UnNamed : 131 
+
+Orphan UnNamed : 132 
+
+Orphan UnNamed : 133 
+
+Orphan UnNamed : 134 
+
+Orphan UnNamed : 135 
+
+Orphan UnNamed : 136 
+
+Orphan UnNamed : 137 
+
+Orphan UnNamed : 138 
+
+Orphan UnNamed : 139 
+
+Orphan UnNamed : 140 
+
+Orphan UnNamed : 141 
+
+Orphan UnNamed : 142 
+
+Orphan UnNamed : 143 
+
+Orphan UnNamed : 144 
+
+Orphan UnNamed : 145 
+
+Orphan UnNamed : 146 
+
+Orphan UnNamed : 147 
+
+Orphan UnNamed : 148 
+
+Orphan UnNamed : 149 
+
+Orphan UnNamed : 150 
+
+Orphan UnNamed : 151 
+
+Orphan UnNamed : 152 
+
+Orphan UnNamed : 153 
+
+Orphan UnNamed : 154 
+
+Orphan UnNamed : 155 
+
+Orphan UnNamed : 156 
+
+Orphan UnNamed : 157 
+
+Orphan UnNamed : 158 
+
+Orphan UnNamed : 159 
+
+Orphan UnNamed : 160 
+
+Orphan UnNamed : 161 
+
+Orphan UnNamed : 162 
+
+Orphan UnNamed : 163 
+
+Orphan UnNamed : 164 
+
+Orphan UnNamed : 165 
+
+Orphan UnNamed : 166 
+
+Orphan UnNamed : 167 
+
+Orphan UnNamed : 168 
+
+Orphan UnNamed : 169 
+
+Orphan UnNamed : 170 
+
+Orphan UnNamed : 171 
+
+Orphan UnNamed : 172 
+
+Orphan UnNamed : 173 
+
+Orphan UnNamed : 174 
+
+Orphan UnNamed : 175 
+
+Orphan UnNamed : 176 
+
+Orphan UnNamed : 177 
+
+Orphan UnNamed : 178 
+
+Orphan UnNamed : 179 
+
+Orphan UnNamed : 180 
+
+Orphan UnNamed : 181 
+
+Orphan UnNamed : 182 
+
+Orphan UnNamed : 183 
+
+Orphan UnNamed : 184 
+
+Orphan UnNamed : 185 
+
+Orphan UnNamed : 186 
+
+Orphan UnNamed : 187 
+
+Orphan UnNamed : 188 
+
+Orphan UnNamed : 189 
+
+Orphan UnNamed : 190 
+
+Orphan UnNamed : 191 
+
+Orphan UnNamed : 192 
+
+Orphan UnNamed : 193 
+
+Orphan UnNamed : 194 
+
+Orphan UnNamed : 195 
+
+Orphan UnNamed : 196 
+
+Orphan UnNamed : 197 
+
+Orphan UnNamed : 198 
+
+Orphan UnNamed : 199 
+
+Orphan UnNamed : 200 
+
+Orphan UnNamed : 201 
+
+Orphan UnNamed : 202 
+
+Orphan UnNamed : 203 
+
+Orphan UnNamed : 204 
+
+Orphan UnNamed : 205 
+
+Orphan UnNamed : 206 
+
+Orphan UnNamed : 207 
+
+Orphan UnNamed : 208 
+
+Orphan UnNamed : 209 
+
+Orphan UnNamed : 210 
+
+Orphan UnNamed : 211 
+
+Orphan UnNamed : 212 
+
+Orphan UnNamed : 213 
+
+Orphan UnNamed : 214 
+
+Orphan UnNamed : 215 
+
+Orphan UnNamed : 216 
+
+Orphan UnNamed : 217 
+
+Orphan UnNamed : 218 
+
+Orphan UnNamed : 219 
+
+Orphan UnNamed : 220 
+
+Orphan UnNamed : 221 
+
+Orphan UnNamed : 222 
+
+Orphan UnNamed : 223 
+
+Orphan UnNamed : 224 
+
+Orphan UnNamed : 225 
+
+Orphan UnNamed : 226 
+
+Orphan UnNamed : 227 
+
+Orphan UnNamed : 228 
+
+Orphan UnNamed : 229 
+
+Orphan UnNamed : 230 
+
+Orphan UnNamed : 231 
+
+Orphan UnNamed : 232 
+
+Orphan UnNamed : 233 
+
+Orphan UnNamed : 234 
+
+Orphan UnNamed : 235 
+
+Orphan UnNamed : 236 
+
+Orphan UnNamed : 237 
+
+Orphan UnNamed : 238 
+
+Orphan UnNamed : 239 
+
+Orphan UnNamed : 240 
+
+Orphan UnNamed : 241 
+
+Orphan UnNamed : 242 
+
+Orphan UnNamed : 243 
+
+Orphan UnNamed : 244 
+
+Orphan UnNamed : 245 
+
+Orphan UnNamed : 246 
+
+Orphan UnNamed : 247 
+
+Orphan UnNamed : 248 
+
+Orphan UnNamed : 249 
+
+Orphan UnNamed : 250 
+
+Orphan UnNamed : 251 
+
+Orphan UnNamed : 252 
+
+Orphan UnNamed : 253 
+
+Orphan UnNamed : 254 
+
+Orphan UnNamed : 255 
