@@ -15,9 +15,9 @@ This demo shows all the keys in the NVS.
 void setup() {
     int err;
     err=nvs_flash_init();
-    Serial.println("nvs_flash_init: " + err);
+    Serial.printf("nvs_flash_init: %d\n" ,err);
     err=nvs_flash_erase();
-    Serial.println("nvs_flash_erase: " + err);
+    Serial.printf("nvs_flash_erase: %d\n" ,err);
  }
 ```
 
