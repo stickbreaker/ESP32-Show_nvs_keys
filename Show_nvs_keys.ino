@@ -5,6 +5,9 @@
 //
 #include <stdio.h>
 #include <string.h>
+#include <nvs.h>
+#include <nvs_flash.h>
+
 #include <esp_partition.h>
 // Debug buffer size
 
@@ -242,11 +245,6 @@ while(i<(nvs->size / sizeof(nvs_page))){
     }
   i++;      
   }    
-Serial.printf("\nNAME SPACES\n");
-for(i=0;i<NA->count;i++){
-  Serial.printf("%15s = %u\n",NA->ns[i].name,NA->ns[i].nsID);  
-  }
-
 }
 
 //
@@ -358,10 +356,11 @@ return index + inc;
 //
 // listKeys for a specified namespace
 //
-void listKeys(const esp_partition_t *nvs, uint8_t id){
+void listKeys(const esp_partition_t *nvs, uint8_t id, const char name[],bool mustShow){
 uint8_t i = 0;
 uint16_t offset=0;
 esp_err_t result=ESP_OK;
+bool show =false;
 
 i=0;
 while(i<(nvs->size / sizeof(nvs_page))){
@@ -373,6 +372,10 @@ while(i<(nvs->size / sizeof(nvs_page))){
       while(j<126){
         bm =(buf.Bitmap[j/4] >>((j%4)*2)) & 0x03;  // Get bitmap for this entry
         if((bm == 2) &&(buf.Entry[j].Ns == id)){ // found namespace entry
+          if(!show) {
+            Serial.print(name);
+            show=true;
+            }
           Serial.printf("%u-",i);
           disp_nvs_data(j);
           }
@@ -386,24 +389,23 @@ while(i<(nvs->size / sizeof(nvs_page))){
       }
     }
   i++;      
-  }    
+  }
+if(!show && mustShow) Serial.print(name);  
 }
   
 //**************************************************************************************************
 //                                          S E T U P                                              *
 //**************************************************************************************************
 //**************************************************************************************************
-void setup()
+void show()
 {
+    
   esp_partition_iterator_t  pi;                              // Iterator for find
   const esp_partition_t*    nvs;                             // Pointer to partition struct
   esp_err_t                 result = ESP_OK;
   const char*               partname = "nvs";
   uint8_t                   i;                               // Index in Entry 0..125
   uint8_t                   bm;                              // Bitmap for an entry
-  
-  Serial.begin(115200);                                   // For debug
-  Serial.println();
   pi = esp_partition_find( ESP_PARTITION_TYPE_DATA,          // Get partition iterator for
                             ESP_PARTITION_SUBTYPE_ANY,        // this partition
                             partname );
@@ -420,28 +422,80 @@ void setup()
   refreshNVS(nvs);  // initialize pageOrder[] and NA
 
   i=0;
+  Serial.printf("/nFound %d Name Spaces:\n",NA->count);
+  Serial.printf("     Name Space : index \n");           
   while(i<NA->count){
-    Serial.printf("\nNameSpace: %15s = %u\n",NA->ns[i].name,NA->ns[i].nsID);
+    Serial.printf("%15s = %u\n",NA->ns[i].name,NA->ns[i].nsID);
     i++;
     }
  
  i=0;
  uint8_t j=0;
+ char name[100];
+ bool mustShow;
   while(i<255){
     if(i<NA->count){
-      Serial.printf("\nNameSpace: %15s \n",NA->ns[i].name);
+      sprintf(name,"\nNameSpace: %15s \n",NA->ns[i].name);
       j=NA->ns[i].nsID;
+      mustShow=true;
       }
     else {
       j = i+1;
-      Serial.printf("\nOrphan UnNamed : %u \n",j);
+      sprintf(name,"\nOrphan UnNamed : %u \n",j);
+      mustShow=false;
       }
-    listKeys(nvs,j);
+    listKeys(nvs,j,name,mustShow);
     i++;
     }
     
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
+void printHelp(){
+Serial.println("  SHOW NVS keys\n\nCommand:\tAction\n");
+Serial.println("?\t\tDisplay this help screen");
+Serial.println("show\t\tShow NVS structure, and all Keys");
+Serial.println("init\t\tInitialize NVS flash structure");
+Serial.println("erase\t\tErase existing Flash Structure");
+Serial.println();
 }
+void setup(){
+    
+Serial.begin(115200);                                   // For debug
+Serial.println();
+printHelp();
+}
+
+#define MAXBUFFER 50
+static char inputBuffer[MAXBUFFER+1];
+static uint8_t inPos=0;
+void loop() {
+  int err;
+  // put your main code here, to run repeatedly:
+  if(Serial.available()){
+    char ch=Serial.read();
+    if(ch=='\n'){
+      if(strcmp(inputBuffer,"init")==0){
+        err=nvs_flash_init();
+        Serial.printf("nvs_flash_init: %d\n" , err);
+        }
+      else if(strcmp(inputBuffer,"erase")==0){
+        err=nvs_flash_erase();
+        Serial.printf("nvs_flash_erase: %d\n", err);
+        }
+      else if(strcmp(inputBuffer,"show")==0){
+        show();
+        }
+      else if(strcmp(inputBuffer,"?")==0){
+        printHelp();
+        }
+      inPos=0;
+      inputBuffer[inPos]='\0';
+      }
+    else {
+      inputBuffer[inPos++]=ch;
+      if (inPos>=MAXBUFFER) inPos=MAXBUFFER;
+      inputBuffer[inPos]='\0';
+      }
+    }
+  }
+
