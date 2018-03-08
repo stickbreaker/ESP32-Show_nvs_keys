@@ -166,6 +166,68 @@ if((state == INVALID)) Serial.print("INVALID ");
 }
 
 //
+// test page inuse bitmap
+//
+void testBitMap(const esp_partition_t* nvs){
+uint8_t j=0,bm,k=0,l=0,m=0;
+char dispBuf[100];
+char ch;
+memset(dispBuf,' ',100);
+while(j<126){
+  bm =(buf.Bitmap[j/4] >>((j%4)*2)) & 0x03;  // Get bitmap for this entry
+  switch(bm){
+    case 0: // erased (deleted)
+      ch='D';
+      l=0;
+      break;
+    case 1: // undefined
+      ch='u';
+      l=0;
+      m = buf.Entry[j].Ns;
+      break;
+    case 2: // in use, WRITTEN
+      ch='*';
+      if(l==0){
+ //       Serial.printf("%3d: %15s %02x, %d\n",j,buf.Entry[j].Key,
+ //         buf.Entry[j].Type,buf.Entry[j].Span);
+        l=buf.Entry[j].Span;
+        m= buf.Entry[j].Ns;
+        }
+      l--;  
+      break;
+    case 3: // empty,
+      ch='.';
+      l=0;
+      m = buf.Entry[j].Ns;
+      break;
+    default : ;
+    }
+  dispBuf[(j%16)+49]=ch;
+  dispBuf[(j%16)+50]='\0';
+  if(ch=='D'){
+    dispBuf[k]=' ';
+    k+=3;
+    }
+  else k += sprintf((char*)&dispBuf[k]," %02X",m);
+
+  j++;
+
+  if((j%16)==0){
+    dispBuf[k]=' ';
+    Serial.printf("%3d:%s\n",((j/16)-1)*16,dispBuf);
+    memset(dispBuf,' ',100);
+    k=0;
+    }    
+  }
+if((j%16)!=0){
+  dispBuf[k]=' ';
+  Serial.printf("%3d:%s\n",(j/16)*16,dispBuf);
+  memset(dispBuf,' ',100);
+  k=0;
+  }    
+}
+
+//
 // initialize logical page translation table, NameSpace list.
 //
 void refreshNVS(const esp_partition_t* nvs ){
@@ -203,6 +265,10 @@ while(i< (nvs->size / sizeof(nvs_page))){
         }
       }
     else Serial.printf(" Page[%u] not active, State = 0x%lx Seqnr=%u ",i,buf.State,buf.Seqnr);
+    Serial.println("\n Entry bitmap\n"
+    "   : Owning NameSpace index (hex)                     Status ('.' empty, '*' inuse, 'D' deleted)");
+    
+    testBitMap(nvs);
     }
   else Serial.printf(" Page[%u] read Error = 0x%lx",i,result);
   Serial.println();
@@ -303,7 +369,9 @@ switch(nvs->Type){
     break;
   case 0x21: // SZ, String Zero terminated
     sprintf(dtype,"SZ  ");
-    desc = (char*)&buf.Entry[index+1];
+    descSize=12+nvs->Data.size;
+    desc=(char*)malloc(descSize);
+    sprintf(desc,"size=%04x\n%s",nvs->Data.size,(char*)&buf.Entry[index+1]);
     break;
   case 0x41: // BLOB
     sprintf(dtype,"BLOB");
@@ -316,7 +384,7 @@ switch(nvs->Type){
     desc[descSize-1] = '\0';
  //   Serial.printf("Blob size=%d calc=%d\n",nvs->Data.size,descSize);
     d1 = (char*)&buf.Entry[index+1];
-    i=sprintf(desc,"size:%04x\n",nvs->Data.size);
+    i=sprintf(desc,"size=%04x\n",nvs->Data.size);
     j=0;
     n=0;
     while(j< nvs->Data.size){
@@ -348,7 +416,7 @@ switch(nvs->Type){
     desc= (char*)&dvalue;
     inc = 1;
   }
-Serial.printf("%03d:%15s type:%s data=%s\n",index,nvs->Key,dtype,desc);
+Serial.printf("%03d:%15s type:%s data:%s\n",index,nvs->Key,dtype,desc);
 if(descSize) free(desc);
 return index + inc;  
 }
@@ -412,30 +480,32 @@ void show()
   if(pi) {
     nvs = esp_partition_get( pi );                          // Get partition struct
     esp_partition_iterator_release( pi );                   // Release the iterator
-    Serial.printf( "Partition %s found, %d bytes\n", partname, nvs->size );
+    Serial.printf( "Partition %s found, %d pages (%d bytes)\n", partname, nvs->size / sizeof(nvs_page), nvs->size );
     }
   else {
     Serial.printf( "Partition %s not found!\n", partname );
     return;
     }
-
+  Serial.println();
   refreshNVS(nvs);  // initialize pageOrder[] and NA
 
   i=0;
-  Serial.printf("/nFound %d Name Spaces:\n",NA->count);
+  Serial.printf("\nFound %d Name Spaces:\n",NA->count);
   Serial.printf("     Name Space : index \n");           
   while(i<NA->count){
     Serial.printf("%15s = %u\n",NA->ns[i].name,NA->ns[i].nsID);
     i++;
     }
  
- i=0;
- uint8_t j=0;
- char name[100];
- bool mustShow;
+  i=0;
+  uint8_t j=0;
+  char name[100];
+  bool mustShow;
+  Serial.println("\nListing Entries of each NameSpace:\n"
+    "PAGE-ENTRY: KEYNAME type:DATATYPE data:VALUE(U8..U64) size=hex(BLOB,SZ)");
   while(i<255){
     if(i<NA->count){
-      sprintf(name,"\nNameSpace: %15s \n",NA->ns[i].name);
+      sprintf(name,"\nNameSpace[%3d]: %15s  \n",NA->ns[i].nsID,NA->ns[i].name);
       j=NA->ns[i].nsID;
       mustShow=true;
       }
